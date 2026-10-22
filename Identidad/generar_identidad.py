@@ -290,6 +290,108 @@ def marco_html(ancho=1800, alto=1100):
     return pagina(cuerpo, f"{ancho}px", f"{alto}px", css)
 
 
+def banner_mascota_html(nombre, ancho=1600, alto=480):
+    """Banner negro con la mascota (íbice) a la izquierda, el logo en el centro y el lema a la derecha."""
+    from mascota import ibice
+    logo_neg = logo_svg(nombre, BLANCO, NEGRO, con_lema=False, uid=f"bm{ancho}")
+    contornos = curvas_nivel(ancho - 300, 240, 22 + (ancho - 1600) // 60, BLANCO, 0.10, semilla=17, paso=30, base=30)
+    css = f"""
+  .ban {{ position: relative; width: {ancho}px; height: {alto}px; background: {NEGRO}; overflow: hidden; color: {BLANCO};
+         font-family: {TEXTO}; }}
+  .ban svg.capa {{ position: absolute; inset: 0; }}
+  .logo {{ position: absolute; left: 470px; top: 50%; width: 460px; transform: translateY(-50%); }}
+  .logo svg {{ width: 100%; height: auto; display: block; }}
+  .txt {{ position: absolute; left: 1000px; top: 50%; transform: translateY(-50%); }}
+  .lema {{ font-family: {TITULOS}; font-stretch: condensed; font-weight: 700; font-size: 50px; line-height: 1.05;
+          letter-spacing: 2px; text-transform: uppercase; }}
+  .lema b {{ color: {BREZO_C}; font-weight: 700; }}
+  .sub {{ font-size: 22px; letter-spacing: 5px; text-transform: uppercase; color: {GRIS_C}; margin-top: 16px; }}
+  .linea {{ width: 120px; height: 6px; background: {BREZO}; margin-top: 22px; border-radius: 3px; }}"""
+    cuerpo = f"""<div class="ban">
+  <svg class="capa" width="{ancho}" height="{alto}">{contornos}</svg>
+  <svg class="capa" width="440" height="{alto}" viewBox="40 80 560 520" preserveAspectRatio="xMinYMax meet">{ibice(BLANCO, NEGRO, BREZO, uid=f"ib{ancho}")}</svg>
+  <div class="logo">{logo_neg}</div>
+  <div class="txt"><div class="lema">Tu próxima cumbre<br><b>empieza aquí</b></div>
+    <div class="sub">Escalada · Trekking · Nieve</div><div class="linea"></div></div>
+</div>"""
+    return pagina(cuerpo, f"{ancho}px", f"{alto}px", css)
+
+
+def mascota_html(tinta, fondo, lado=1024):
+    """La mascota sola, sin fondo, para usarla suelta en el documento."""
+    from mascota import ibice
+    css = "body { background: transparent; } svg { display: block; }"
+    cuerpo = f'<svg width="{lado}" height="{lado}" viewBox="0 0 600 600">{ibice(tinta, fondo, BREZO, uid="suelta")}</svg>'
+    return pagina(cuerpo, f"{lado}px", f"{lado}px", css)
+
+
+def separador_html(ancho=4080, alto=192, etiqueta="", titulo=""):
+    """Separador de partes del documento: rectángulo negro (60 % más bajo que el banner) con el íbice en blanco a la derecha.
+
+    Si se pasa `etiqueta` y `titulo`, se escriben a la izquierda, alineados con el margen del documento (3 cm de 21).
+    """
+    from mascota import ibice
+    alto_ibice = alto * 0.82
+    ancho_ibice = alto_ibice * 360 / 380
+    x = ancho - 300 - ancho_ibice
+    x_texto = round(ancho * 3 / 21)
+    texto = ""
+    if titulo:
+        texto = f"""
+  <text x="{x_texto}" y="{alto / 2 + 25:.0f}" font-family="{TITULOS}" font-weight="700">
+    <tspan font-size="40" letter-spacing="8" fill="{BREZO_C}">{html.escape(etiqueta.upper())}</tspan>
+    <tspan dx="34" font-size="56" fill="{GRIS}">|</tspan>
+    <tspan dx="34" font-size="74" letter-spacing="3" fill="{BLANCO}">{html.escape(titulo.upper())}</tspan>
+  </text>"""
+    css = "body { background: transparent; } svg { display: block; }"
+    cuerpo = f"""<svg width="{ancho}" height="{alto}" viewBox="0 0 {ancho} {alto}">
+  <rect width="{ancho}" height="{alto}" fill="{NEGRO}"/>{texto}
+  <svg x="{x:.0f}" y="{(alto - alto_ibice) / 2:.0f}" width="{ancho_ibice:.0f}" height="{alto_ibice:.0f}" viewBox="170 92 360 380">
+    {ibice(BLANCO, NEGRO, BLANCO, uid="separador", con_roca=False)}
+  </svg>
+</svg>"""
+    return pagina(cuerpo, f"{ancho}px", f"{alto}px", css)
+
+
+def marco_nota_html(ancho=1800, alto=620):
+    """Marco H3 para aclaraciones: todo negro, sin contorno, con un icono de información discreto."""
+    r = 28
+    css = "body { background: transparent; } svg { display: block; }"
+    cuerpo = f"""<svg width="{ancho}" height="{alto}" viewBox="0 0 {ancho} {alto}">
+  <rect x="0" y="0" width="{ancho}" height="{alto}" rx="{r}" fill="{NEGRO}"/>
+  <!-- icono de información en la esquina superior izquierda -->
+  <circle cx="74" cy="74" r="30" fill="none" stroke="{BLANCO}" stroke-width="5"/>
+  <circle cx="74" cy="60" r="4.5" fill="{BLANCO}"/>
+  <rect x="70" y="70" width="8" height="24" rx="4" fill="{BLANCO}"/>
+  <!-- guía muy sutil donde empieza el texto -->
+  <rect x="128" y="72" width="70" height="4" rx="2" fill="{GRIS}"/>
+</svg>"""
+    return pagina(cuerpo, f"{ancho}px", f"{alto}px", css)
+
+
+def marco_negro_html(ancho=1800, alto=1100):
+    """Marco 'normal' y ligero: borde negro fino, dos ángulos discretos y una barra corta bajo el título.
+
+    Sin color de acento: el brezo se reserva para el marco de cosas a destacar.
+    """
+    m, r = 30, 26
+    x2, y2 = ancho - m, alto - m
+    L = 80
+    css = "body { background: transparent; } svg { display: block; }"
+    cuerpo = f"""<svg width="{ancho}" height="{alto}" viewBox="0 0 {ancho} {alto}">
+  <rect x="{m}" y="{m}" width="{x2 - m}" height="{y2 - m}" rx="{r}" fill="{BLANCO}" stroke="{NEGRO}" stroke-width="4"/>
+  <!-- ángulos discretos: arriba a la izquierda y abajo a la derecha -->
+  <g fill="none" stroke="{NEGRO}" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M{m - 14} {m + L} L{m - 14} {m - 14} L{m + L} {m - 14}"/>
+    <path d="M{x2 + 14} {y2 - L} L{x2 + 14} {y2 + 14} L{x2 - L} {y2 + 14}"/>
+  </g>
+  <!-- barra corta bajo la zona del título -->
+  <rect x="{m + 60}" y="{m + 118}" width="160" height="7" rx="3.5" fill="{NEGRO}"/>
+  <rect x="{m + 232}" y="{m + 118}" width="40" height="7" rx="3.5" fill="{GRIS_C}"/>
+</svg>"""
+    return pagina(cuerpo, f"{ancho}px", f"{alto}px", css)
+
+
 # ------------------------------------------------------------------------- render
 def edge():
     for ruta in EDGE:
@@ -355,9 +457,21 @@ def main():
     a_png(escribir("_cabecera.html", cabecera_html(a.nombre)), os.path.join(SALIDA, "cabecera.png"), 1600, 480)
     # Versión ancha (proporción de un A4 a sangre: 21 x 3,15 cm) para el encabezado del documento
     a_png(escribir("_cabecera_ancha.html", cabecera_html(a.nombre, 3200)), os.path.join(SALIDA, "cabecera_ancha.png"), 3200, 480)
+    # Versión para el encabezado de Word (21 x 2,47 cm)
+    a_png(escribir("_cabecera_word.html", cabecera_html(a.nombre, 4080)), os.path.join(SALIDA, "cabecera_word.png"), 4080, 480)
     a_png(escribir("_guia.html", guia_html(a.nombre)), os.path.join(SALIDA, "guia_estilo.png"), 1200, 1180)
     a_png(escribir("_fondo.html", fondo_gris_html()), os.path.join(SALIDA, "fondo_gris_A4.png"), 2480, 3508)
     a_png(escribir("_marco.html", marco_html()), os.path.join(SALIDA, "marco_brezo.png"), 1800, 1100)
+    a_png(escribir("_marco_negro.html", marco_negro_html()), os.path.join(SALIDA, "marco_negro.png"), 1800, 1100)
+    a_png(escribir("_marco_nota.html", marco_nota_html()), os.path.join(SALIDA, "marco_nota.png"), 1800, 620)
+    a_png(escribir("_separador.html", separador_html()), os.path.join(SALIDA, "separador.png"), 4080, 192)
+    for n, titulo in ((1, "La empresa y la app"), (2, "Desarrollo"), (3, "Conclusión")):
+        a_png(escribir(f"_sep{n}.html", separador_html(etiqueta=f"Parte {n}", titulo=titulo)),
+              os.path.join(SALIDA, f"separador_parte{n}.png"), 4080, 192)
+    a_png(escribir("_banner_mascota.html", banner_mascota_html(a.nombre)), os.path.join(SALIDA, "banner_mascota.png"), 1600, 480)
+    a_png(escribir("_banner_mascota_w.html", banner_mascota_html(a.nombre, 4080)), os.path.join(SALIDA, "banner_mascota_word.png"), 4080, 480)
+    a_png(escribir("_mascota_b.html", mascota_html(BLANCO, NEGRO)), os.path.join(SALIDA, "mascota_blanca.png"), 1024, 1024)
+    a_png(escribir("_mascota_n.html", mascota_html(NEGRO, BLANCO)), os.path.join(SALIDA, "mascota_negra.png"), 1024, 1024)
 
     for f in os.listdir(SALIDA):
         if f.startswith("_"):
