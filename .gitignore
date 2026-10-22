@@ -1,8 +1,5 @@
-# --- Material de apoyo personal (no forma parte de la entrega) ---
-Guia_Trabajo_SGE_Odoo.pdf
-Checklist_Trabajo_SGE.html
-# Enunciado del profesor
-TRABAJO SGE.pdf
+﻿# Repositorio de ENTREGAS del trabajo de SGE (documento, PDF y módulo de Odoo)
+# El material de trabajo (identidad, pruebas, guía…) vive en la carpeta padre Trabajo_Mountain.
 
 # --- Python / Odoo ---
 __pycache__/
@@ -11,7 +8,8 @@ __pycache__/
 *.log
 *.conf
 
-# --- Sistema y editores ---
+# --- Temporales de Office y del sistema ---
+~$*
 Thumbs.db
 desktop.ini
 .vscode/
