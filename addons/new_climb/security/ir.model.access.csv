@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_new_climb_new_climb,new_climb.new_climb,model_new_climb_new_climb,base.group_user,1,1,1,1
+access_new_climb_proveedor,new_climb.proveedor,model_new_climb_proveedor,base.group_user,1,1,1,1
