@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="new_climb.list">
+      <field name="name">new_climb list</field>
+      <field name="model">new_climb.new_climb</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="new_climb.action_window">
+      <field name="name">new_climb window</field>
+      <field name="res_model">new_climb.new_climb</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="new_climb.action_server">
+      <field name="name">new_climb server</field>
+      <field name="model_id" ref="model_new_climb_new_climb"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="new_climb" id="new_climb.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="new_climb.menu_1" parent="new_climb.menu_root"/>
+    <menuitem name="Menu 2" id="new_climb.menu_2" parent="new_climb.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="new_climb.menu_1_list" parent="new_climb.menu_1"
+              action="new_climb.action_window"/>
+    <menuitem name="Server to list" id="new_climb" parent="new_climb.menu_2"
+              action="new_climb.action_server"/>
+-->
+  </data>
+</odoo>
