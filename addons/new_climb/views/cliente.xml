@@ -1,51 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
   <data>
-#Lista Definición 
-    <record model="ir.ui.view" id="new_climb.list">
-      <field name="name">new_climb list</field>
-      <field name="model">new_climb.new_climb</field>
+    <!-- Vista de lista -->
+    <record model="ir.ui.view" id="cliente_list">
+      <field name="name">cliente list</field>
+      <field name="model">new_climb.cliente</field>
       <field name="arch" type="xml">
         <list>
           <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="direccion"/>
+          <field name="telefono"/>
+          <field name="email"/>
+          <field name="socio_premium"/>
         </list>
       </field>
     </record>
 
+    <!-- Vista de formulario: la ficha de un cliente -->
+    <record model="ir.ui.view" id="cliente_form">
+      <field name="name">cliente form</field>
+      <field name="model">new_climb.cliente</field>
+      <field name="arch" type="xml">
+        <form string="Cliente">
+          <sheet>
+            <div class="oe_title">
+              <label for="name"/>
+              <h1><field name="name" placeholder="Nombre y apellidos"/></h1>
+            </div>
 
- #Acciones para abrir la vista de lista y formulario
-    <record model="ir.actions.act_window" id="new_climb.action_window">
-      <field name="name">new_climb window</field>
-      <field name="res_model">new_climb.new_climb</field>
-      <field name="view_mode">list,form</field>
-    </record>
+            <group>
+              <group string="Datos de contacto">
+                <field name="direccion"/>
+                <field name="telefono" widget="phone"/>
+                <field name="email" widget="email"/>
+              </group>
+              <group string="Datos de gestión">
+                <field name="fecha_registro"/>
+                <field name="socio_premium" widget="boolean_toggle"/>
+              </group>
+            </group>
 
-  #Acciones para abrir la vista de lista y formulario desde un servidor
-    <record model="ir.actions.server" id="new_climb.action_server">
-      <field name="name">new_climb server</field>
-      <field name="model_id" ref="model_new_climb_new_climb"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "list,form",
-          "res_model": model._name,
-        }
+            <notebook>
+              <page string="Alquileres" name="alquileres">
+                <field name="alquiler_ids">
+                  <list>
+                    <field name="name"/>
+                    <field name="fecha_alquiler"/>
+                    <field name="fecha_devolucion"/>
+                    <field name="precio_total"/>
+                  </list>
+                </field>
+              </page>
+              <page string="Observaciones" name="observaciones">
+                <field name="observaciones" placeholder="Notas sobre el cliente..."/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
       </field>
     </record>
 
-  #Menu items
-    <menuitem name="new_climb" id="new_climb.menu_root"/>
+    <!-- Vista de búsqueda: la barra de buscar, los filtros y las agrupaciones -->
+    <record model="ir.ui.view" id="cliente_search">
+      <field name="name">cliente search</field>
+      <field name="model">new_climb.cliente</field>
+      <field name="arch" type="xml">
+        <search string="Buscar clientes">
+          <field name="name"/>
+          <field name="email"/>
+          <field name="telefono"/>
 
-  #Menu items hijos
-    <menuitem name="Menu 1" id="new_climb.menu_1" parent="new_climb.menu_root"/>
-    <menuitem name="Menu 2" id="new_climb.menu_2" parent="new_climb.menu_root"/>
+          <!-- filtros -->
+          <separator/>
+          <filter name="filtro_premium" string="Socios premium"
+                  domain="[('socio_premium', '=', True)]"/>
+          <filter name="filtro_no_premium" string="Sin premium"
+                  domain="[('socio_premium', '=', False)]"/>
+          <separator/>
+          <filter name="filtro_fecha_registro" string="Fecha de registro"
+                  date="fecha_registro"/>
 
-  #Acciones de menu
-    <menuitem name="List" id="new_climb.menu_1_list" parent="new_climb.menu_1"
-              action="new_climb.action_window"/>
-    <menuitem name="Server to list" id="new_climb.menu_2_server" parent="new_climb.menu_2"
-              action="new_climb.action_server"/>
+          <!-- agrupar por -->
+          <filter name="agrupar_premium" string="Socio premium"
+                  context="{'group_by': 'socio_premium'}"/>
+          <filter name="agrupar_mes_registro" string="Mes de registro"
+                  context="{'group_by': 'fecha_registro:month'}"/>
+        </search>
+      </field>
+    </record>
+
+    <!-- Acción: abre los clientes en lista y formulario, con su búsqueda -->
+    <record model="ir.actions.act_window" id="cliente_action_window">
+      <field name="name">Clientes</field>
+      <field name="res_model">new_climb.cliente</field>
+      <field name="view_mode">list,form</field>
+      <field name="search_view_id" ref="cliente_search"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">Registra tu primer cliente</p>
+        <p>Aquí verás a las personas que alquilan material en New Climb.</p>
+      </field>
+    </record>
+
+
+    <menuitem name="Clientes" id="cliente_menu_1" parent="new_climb.menu_root"/>
+
+    <menuitem name="Clientes" id="cliente_menu_1_list" parent="cliente_menu_1"
+              action="cliente_action_window"/>
+
   </data>
 </odoo>

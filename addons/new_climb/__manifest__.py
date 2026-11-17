@@ -23,7 +23,11 @@
 
     'data': [
         'security/ir.model.access.csv',
+        'views/proveedor.xml', 
         'views/cliente.xml',
+        'views/alquiler.xml',
+        'views/material.xml',
+        'views/revision.xml',
     ],
     'installable': True,
     'application': True,

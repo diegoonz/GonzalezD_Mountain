@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models
+from odoo import fields
 
 #clase cliente para almacenar información sobre los clientes de material de montaña
 class Cliente(models.Model):
@@ -15,3 +16,4 @@ class Cliente(models.Model):
     fecha_registro = fields.Date(string='Fecha de registro', default=fields.Date.today)
     socio_premium = fields.Boolean(string='Socio premium', default=False)
     observaciones = fields.Text(string='Observaciones')
+    alquiler_ids = fields.One2many('new_climb.alquiler', 'cliente_id', string='Alquileres realizados')

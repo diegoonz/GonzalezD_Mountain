@@ -1,4 +1,6 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_new_climb_proveedor,new_climb_proveedor,model_new_climb_proveedor,base.group_user,1,1,1,1
 access_new_climb_cliente,access_new_climb_cliente,model_new_climb_cliente,base.group_user,1,1,1,1
-                
+access_new_climb_alquiler,access_new_climb_alquiler,model_new_climb_alquiler,base.group_user,1,1,1,1
+access_new_climb_material,access_new_climb_material,model_new_climb_material,base.group_user,1,1,1,1
+access_new_climb_revision,access_new_climb_revision,model_new_climb_revision,base.group_user,1,1,1,1

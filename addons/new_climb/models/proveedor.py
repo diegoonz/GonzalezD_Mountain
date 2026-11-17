@@ -1,4 +1,5 @@
-from odoo import models, fields
+from odoo import models
+from odoo import fields
 
 #clase Proveedor para almacenar información sobre los proveedores de material de montaña
 class Proveedor(models.Model):
@@ -12,6 +13,7 @@ class Proveedor(models.Model):
     email = fields.Char(string='Correo electrónico')
     website = fields.Char(string='Sitio web')
 
+
     #datos del proveedor para gestionarlo
     actividad = fields.Selection([
         ('activo', 'Activo'),
@@ -21,3 +23,7 @@ class Proveedor(models.Model):
         ('ropa', 'Ropa'),
         ('material_tecnico', 'Material Técnico'),
     ], string='Tipo de proveedor')
+
+    #relacion con el material que suministra
+    material_ids = fields.One2many('new_climb.material', 'proveedor_id', string='Material suministrado')
+

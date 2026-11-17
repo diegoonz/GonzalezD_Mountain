@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Vista de lista -->
+    <record id="vista_lista_revisiones" model="ir.ui.view">
+        <field name="name">new_climb.revision.list</field>
+        <field name="model">new_climb.revision</field>
+        <field name="arch" type="xml">
+            <list string="revisiones">
+                <field name="referencia"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de formulario -->
+    <record id="vista_formulario_revisiones" model="ir.ui.view">
+        <field name="name">new_climb.revision.form</field>
+        <field name="model">new_climb.revision</field>
+        <field name="arch" type="xml">
+            <form string="revision">
+                <sheet>
+                    <group>
+                        <field name="referencia"/>
+                        <field name="nombre_revisor"/>
+                        <field name="fecha_revision"/>
+                        <field name="razon_revision"/>
+                        <field name="valida_hasta"/>
+                        <field name="valido"/>
+                        <field name="certificado"/>
+                        <field name="material_id"/>
+                    </group>
+                </sheet>
+            </form>   
+        </field>
+    </record> 
+
+        <!-- Vista de busqueda -->
+<record id="vista_busqueda_revisiones" model="ir.ui.view">
+    <field name="name">new_climb.revisiones.search</field>
+    <field name="model">new_climb.revision</field>
+    <field name="arch" type="xml">
+        <search string = "Buscar revisiones">
+            <field name="referencia"/>
+            <field name="nombre_revisor"/>
+            <field name="fecha_revision"/>
+            <field name="material_id"/>
+           
+            <filter name="Razon_revision"
+                    string="Revisiones por razón"
+                    context="{'group_by': 'razon_revision'}"/>
+            <filter name="Fecha_revision"
+                    string="Revisiones por fecha"
+                    date="fecha_revision"/>
+            
+        </search>
+    </field>
+</record>
+
+     
+    <!-- Acción -->
+    <record id="accion_revisiones" model="ir.actions.act_window">
+        <field name="name">revisiones</field>
+        <field name="res_model">new_climb.revision</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="vista_busqueda_revisiones"/>
+    </record>
+    <!-- Menú -->
+    <menuitem id="menu_new_climb_revisiones"
+          name="Revisiones"
+          parent="new_climb.menu_root"
+          action="accion_revisiones"/>
+</odoo>
