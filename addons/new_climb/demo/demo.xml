@@ -1,30 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-<!--
-          <record id="object0" model="new_climb.new_climb">
-            <field name="name">Object 0</field>
-            <field name="value">0</field>
-          </record>
+        <!--
+            DATOS DE DEMOSTRACIÓN DE NEW CLIMB
+            Hechos con ayuda de IA, con permiso del profesor.
+            El orden importa: primero lo que no depende de nada (proveedores y clientes),
+            después el material, sus revisiones y, al final, los alquileres.
+        -->
 
-          <record id="object1" model="new_climb.new_climb">
-            <field name="name">Object 1</field>
-            <field name="value">10</field>
-          </record>
+        <!-- ===================== PROVEEDORES ===================== -->
+        <record id="proveedor_petzl" model="new_climb.proveedor">
+            <field name="name">Petzl</field>
+            <field name="direccion">Polígono Industrial Malpica, Zaragoza</field>
+            <field name="telefono">976 000 101</field>
+            <field name="email">pedidos@petzl.example.com</field>
+            <field name="website">https://www.petzl.com</field>
+            <field name="actividad">activo</field>
+            <field name="tipo">material_tecnico</field>
+        </record>
 
-          <record id="object2" model="new_climb.new_climb">
-            <field name="name">Object 2</field>
-            <field name="value">20</field>
-          </record>
+        <record id="proveedor_black_diamond" model="new_climb.proveedor">
+            <field name="name">Black Diamond</field>
+            <field name="direccion">Calle Alfonso I 12, Zaragoza</field>
+            <field name="telefono">976 000 102</field>
+            <field name="email">ventas@blackdiamond.example.com</field>
+            <field name="website">https://www.blackdiamondequipment.com</field>
+            <field name="actividad">activo</field>
+            <field name="tipo">material_tecnico</field>
+        </record>
 
-          <record id="object3" model="new_climb.new_climb">
-            <field name="name">Object 3</field>
-            <field name="value">30</field>
-          </record>
+        <record id="proveedor_north_face" model="new_climb.proveedor">
+            <field name="name">The North Face</field>
+            <field name="direccion">Paseo Independencia 24, Zaragoza</field>
+            <field name="telefono">976 000 103</field>
+            <field name="email">tiendas@thenorthface.example.com</field>
+            <field name="website">https://www.thenorthface.com</field>
+            <field name="actividad">activo</field>
+            <field name="tipo">ropa</field>
+        </record>
 
-          <record id="object4" model="new_climb.new_climb">
-            <field name="name">Object 4</field>
-            <field name="value">40</field>
-          </record>
--->
+        <!-- Proveedor inactivo, para probar el filtro por estado -->
+        <record id="proveedor_patagonia" model="new_climb.proveedor">
+            <field name="name">Patagonia</field>
+            <field name="direccion">Calle San Miguel 8, Zaragoza</field>
+            <field name="telefono">976 000 104</field>
+            <field name="email">info@patagonia.example.com</field>
+            <field name="website">https://www.patagonia.com</field>
+            <field name="actividad">inactivo</field>
+            <field name="tipo">ropa</field>
+        </record>
+
+        <!-- ===================== CLIENTES ===================== -->
+        <record id="cliente_lucia" model="new_climb.cliente">
+            <field name="name">Lucía Martín</field>
+            <field name="direccion">Calle Delicias 45, Zaragoza</field>
+            <field name="telefono">600 000 201</field>
+            <field name="email">lucia.martin@example.com</field>
+            <field name="fecha_registro">2026-09-15</field>
+            <field name="socio_premium" eval="True"/>
+            <field name="observaciones">Escaladora habitual, sale casi todos los fines de semana a Riglos.</field>
+        </record>
+
+        <record id="cliente_javier" model="new_climb.cliente">
+            <field name="name">Javier López</field>
+            <field name="direccion">Avenida San José 102, Zaragoza</field>
+            <field name="telefono">600 000 202</field>
+            <field name="email">javier.lopez@example.com</field>
+            <field name="fecha_registro">2026-10-03</field>
+            <field name="socio_premium" eval="False"/>
+            <field name="observaciones">Empieza en la vía ferrata, pide consejo con las tallas.</field>
+        </record>
+
+        <record id="cliente_marta" model="new_climb.cliente">
+            <field name="name">Marta Sánchez</field>
+            <field name="direccion">Calle Romareda 7, Zaragoza</field>
+            <field name="telefono">600 000 203</field>
+            <field name="email">marta.sanchez@example.com</field>
+            <field name="fecha_registro">2026-10-20</field>
+            <field name="socio_premium" eval="False"/>
+        </record>
+
+        <!-- ===================== MATERIAL ===================== -->
+        <!-- Many2one con el proveedor: ref al id del proveedor de arriba -->
+        <record id="material_cuerda" model="new_climb.material">
+            <field name="name">Cuerda dinámica 9,8 mm · 60 m</field>
+            <field name="numero_serie">NC-CUE-001</field>
+            <field name="proveedor_id" ref="proveedor_black_diamond"/>
+            <field name="actividad">disponible</field>
+            <field name="precio_alquiler">12.0</field>
+        </record>
+
+        <record id="material_arnes" model="new_climb.material">
+            <field name="name">Arnés de escalada talla M</field>
+            <field name="numero_serie">NC-ARN-001</field>
+            <field name="proveedor_id" ref="proveedor_petzl"/>
+            <field name="actividad">disponible</field>
+            <field name="precio_alquiler">6.0</field>
+        </record>
+
+        <record id="material_mosqueton" model="new_climb.material">
+            <field name="name">Mosquetón de seguro HMS</field>
+            <field name="numero_serie">NC-MOS-001</field>
+            <field name="proveedor_id" ref="proveedor_black_diamond"/>
+            <field name="actividad">disponible</field>
+            <field name="precio_alquiler">2.0</field>
+        </record>
+
+        <record id="material_chaqueta" model="new_climb.material">
+            <field name="name">Chaqueta impermeable talla L</field>
+            <field name="numero_serie">NC-CHA-001</field>
+            <field name="proveedor_id" ref="proveedor_north_face"/>
+            <field name="actividad">disponible</field>
+            <field name="precio_alquiler">8.0</field>
+        </record>
+
+        <!-- Pieza disponible pero SIN revisiones: sirve para probar que Odoo no deja alquilarla -->
+        <record id="material_casco" model="new_climb.material">
+            <field name="name">Casco de escalada</field>
+            <field name="numero_serie">NC-CAS-001</field>
+            <field name="proveedor_id" ref="proveedor_petzl"/>
+            <field name="actividad">disponible</field>
+            <field name="precio_alquiler">4.0</field>
+        </record>
+
+        <!-- Pieza en revisión: sirve para probar que no se puede alquilar si no está disponible -->
+        <record id="material_cuerda_revision" model="new_climb.material">
+            <field name="name">Cuerda dinámica 10 mm · 70 m</field>
+            <field name="numero_serie">NC-CUE-002</field>
+            <field name="proveedor_id" ref="proveedor_black_diamond"/>
+            <field name="actividad">en_revision</field>
+            <field name="precio_alquiler">14.0</field>
+        </record>
+
+        <!-- Pieza vendida: el cliente que se la ha quedado es el comprador -->
+        <record id="material_forro" model="new_climb.material">
+            <field name="name">Forro polar talla S</field>
+            <field name="numero_serie">NC-FOR-001</field>
+            <field name="proveedor_id" ref="proveedor_north_face"/>
+            <field name="actividad">vendida</field>
+            <field name="precio_alquiler">5.0</field>
+            <field name="cliente_id" ref="cliente_lucia"/>
+        </record>
+
+        <!-- ===================== REVISIONES ===================== -->
+        <!-- Fechas de revisión en el pasado (la regla no deja fechas futuras)
+             y "válida hasta" siempre posterior a la fecha de revisión -->
+        <record id="revision_cuerda" model="new_climb.revision">
+            <field name="referencia">REV-2026-001</field>
+            <field name="nombre_revisor">Carlos Pérez</field>
+            <field name="fecha_revision">2026-10-01</field>
+            <field name="razon_revision">seguridad</field>
+            <field name="valida_hasta">2027-10-01</field>
+            <field name="valido" eval="True"/>
+            <field name="material_id" ref="material_cuerda"/>
+        </record>
+
+        <record id="revision_arnes" model="new_climb.revision">
+            <field name="referencia">REV-2026-002</field>
+            <field name="nombre_revisor">Carlos Pérez</field>
+            <field name="fecha_revision">2026-10-05</field>
+            <field name="razon_revision">seguridad</field>
+            <field name="valida_hasta">2027-04-05</field>
+            <field name="valido" eval="True"/>
+            <field name="material_id" ref="material_arnes"/>
+        </record>
+
+        <record id="revision_mosqueton" model="new_climb.revision">
+            <field name="referencia">REV-2026-003</field>
+            <field name="nombre_revisor">Ana Gil</field>
+            <field name="fecha_revision">2026-10-10</field>
+            <field name="razon_revision">mantenimiento</field>
+            <field name="valida_hasta">2027-10-10</field>
+            <field name="valido" eval="True"/>
+            <field name="material_id" ref="material_mosqueton"/>
+        </record>
+
+        <record id="revision_chaqueta" model="new_climb.revision">
+            <field name="referencia">REV-2026-004</field>
+            <field name="nombre_revisor">Ana Gil</field>
+            <field name="fecha_revision">2026-10-12</field>
+            <field name="razon_revision">calidad</field>
+            <field name="valida_hasta">2027-10-12</field>
+            <field name="valido" eval="True"/>
+            <field name="material_id" ref="material_chaqueta"/>
+        </record>
+
+        <!-- Revisión no apta de la cuerda que está en revisión -->
+        <record id="revision_cuerda_no_apta" model="new_climb.revision">
+            <field name="referencia">REV-2026-005</field>
+            <field name="nombre_revisor">Carlos Pérez</field>
+            <field name="fecha_revision">2026-11-02</field>
+            <field name="razon_revision">seguridad</field>
+            <field name="valida_hasta">2026-11-30</field>
+            <field name="valido" eval="False"/>
+            <field name="material_id" ref="material_cuerda_revision"/>
+        </record>
+
+        <!-- ===================== ALQUILERES ===================== -->
+        <!-- Many2many con el material: (6, 0, [refs]) significa "pon exactamente estas piezas".
+             Solo se usan piezas disponibles y con revisión, si no la regla lo rechaza.
+             El precio total se pone a mano porque el onchange no se ejecuta desde el XML
+             (es la suma de los precios de las piezas, igual que hace el onchange). -->
+        <record id="alquiler_riglos" model="new_climb.alquiler">
+            <field name="name">Escalada en Riglos</field>
+            <field name="cliente_id" ref="cliente_lucia"/>
+            <field name="proveedor_id" ref="proveedor_black_diamond"/>
+            <field name="material_id" eval="[(6, 0, [ref('material_cuerda'), ref('material_arnes'), ref('material_mosqueton')])]"/>
+            <field name="fecha_alquiler">2026-11-07</field>
+            <field name="dias_alquiler">2</field>
+            <field name="fecha_devolucion">2026-11-09 19:00:00</field>
+            <field name="precio_total">20.0</field>
+        </record>
+
+        <record id="alquiler_ordesa" model="new_climb.alquiler">
+            <field name="name">Ruta por Ordesa</field>
+            <field name="cliente_id" ref="cliente_javier"/>
+            <field name="proveedor_id" ref="proveedor_north_face"/>
+            <field name="material_id" eval="[(6, 0, [ref('material_chaqueta')])]"/>
+            <field name="fecha_alquiler">2026-11-10</field>
+            <field name="dias_alquiler">3</field>
+            <field name="fecha_devolucion">2026-11-13 18:30:00</field>
+            <field name="precio_total">8.0</field>
+        </record>
+
+        <record id="alquiler_ferrata" model="new_climb.alquiler">
+            <field name="name">Vía ferrata en Sallent</field>
+            <field name="cliente_id" ref="cliente_marta"/>
+            <field name="proveedor_id" ref="proveedor_petzl"/>
+            <field name="material_id" eval="[(6, 0, [ref('material_arnes'), ref('material_mosqueton')])]"/>
+            <field name="fecha_alquiler">2026-11-14</field>
+            <field name="dias_alquiler">1</field>
+            <field name="fecha_devolucion">2026-11-15 20:00:00</field>
+            <field name="precio_total">8.0</field>
+        </record>
     </data>
 </odoo>
